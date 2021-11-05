@@ -6,3 +6,14 @@ sudo apt-get update
 sudo apt-get install -yq docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER
 newgrp docker
+
+sudo parted /dev/sdc --script mklabel gpt mkpart xfspart xfs 0% 100%
+sudo mkfs.xfs /dev/sdc1
+sudo partprobe /dev/sdc1
+
+sudo mkdir /disk
+
+sudo mount /dev/sdc1 /disk
+
+uuid=$(sudo blkid /dev/sdc1 -o value | head -n 1)
+sudo echo "$uuid /disk   xfs   defaults,nofail   1   2" >> /etc/fstab
