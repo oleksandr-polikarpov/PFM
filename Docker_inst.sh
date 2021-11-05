@@ -20,5 +20,5 @@ sudo mkdir /disk
 sudo mount /dev/sdc1 /disk
 
 uuid=$(sudo blkid /dev/sdc1 -o value | head -n 1)
-sudo bash -c 'echo "$0 /disk   xfs   defaults,nofail   1   2" >> /etc/fstab' $uuid
+sudo bash -c 'echo "UUID=$0 /disk   xfs   defaults,nofail   1   2" >> /etc/fstab' $uuid
 sudo chgrp -R docker /disk
