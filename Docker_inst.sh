@@ -25,13 +25,14 @@ sudo bash -c 'echo "UUID=$0 /disk   xfs   defaults,nofail   1   2" >> /etc/fstab
 sudo chgrp -R docker /disk
 
 echo $1 > diskKey.key
+password=$1
 
 if [ ! -d "/etc/smbcredentials" ]; then
 sudo mkdir /etc/smbcredentials
 fi
 if [ ! -f "/etc/smbcredentials/corraibidatastorage.cred" ]; then
     sudo bash -c 'echo "username=corraibidatastorage" >> /etc/smbcredentials/corraibidatastorage.cred'
-    sudo bash -c 'echo "password=$0 >> /etc/smbcredentials/corraibidatastorage.cred' $1
+    sudo bash -c 'echo "$0" >> /etc/smbcredentials/corraibidatastorage.cred' $password
 fi
 sudo chmod 600 /etc/smbcredentials/corraibidatastorage.cred
 sudo bash -c 'echo "//corraibidatastorage.file.core.windows.net/corraibifilestorage /mnt/shared cifs nofail,vers=3.0,credentials=/etc/smbcredentials/corraibidatastorage.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
