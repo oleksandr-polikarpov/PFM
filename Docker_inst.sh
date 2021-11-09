@@ -1,3 +1,6 @@
+password=$1
+echo $password > /home/azureuser/disk.key
+
 sudo apt-get update
 sudo apt-get install -yq ca-certificates curl gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -24,8 +27,7 @@ uuid=$(sudo blkid /dev/sdc1 -o value | head -n 1)
 sudo bash -c 'echo "UUID=$0 /disk   xfs   defaults,nofail   1   2" >> /etc/fstab' $uuid
 sudo chgrp -R docker /disk
 
-password=$1
-echo $password > disk.key
+
 
 if [ ! -d "/etc/smbcredentials" ]; then
 sudo mkdir /etc/smbcredentials
