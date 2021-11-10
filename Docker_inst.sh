@@ -1,5 +1,4 @@
 password=$1
-echo $password > /home/azureuser/disk.key
 
 sudo apt-get update
 sudo apt-get install -yq ca-certificates curl gnupg lsb-release
