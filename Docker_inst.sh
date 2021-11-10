@@ -13,17 +13,17 @@ sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 
 
-
-sudo parted /dev/sdc --script mklabel gpt mkpart xfspart xfs 0% 100%
-sudo mkfs.xfs /dev/sdc1
-sudo partprobe /dev/sdc1
+disk_num="/dev/"$(lsblk -o NAME,HCTL,SIZE,MOUNTPOINT | grep -i "sd" | grep " 8G" | cut -c1-3)
+sudo parted $disk_num --script mklabel gpt mkpart xfspart xfs 0% 100%
+sudo mkfs.xfs $disk_num -f
+sudo partprobe $disk_num
 
 sudo mkdir /disk
 sudo mkdir /mnt/shared
 
-sudo mount /dev/sdc1 /disk
+sudo mount $disk_num /disk
 
-uuid=$(sudo blkid /dev/sdc1 -o value | head -n 1)
+uuid=$(sudo blkid $disk_num -o value | head -n 1)
 sudo bash -c 'echo "UUID=$0 /disk   xfs   defaults,nofail   1   2" >> /etc/fstab' $uuid
 sudo chgrp -R docker /disk
 
